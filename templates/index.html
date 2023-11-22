@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link type="text/css" href="{{url_for('static', filename='css/styles.css')}}" rel="stylesheet" />
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <header>
+<!--        <a class="menu name-project" href="/">сокращатель</a>-->
+         {% for i in menu %}
+        <a class="menu" href="{{i.url}}">{{i.name}}</a>
+         {% endfor %}
+    </header>
+
+    <h2 class="title">{{title}}</h2>
+
+    <form class="for-links" action="/createhref" method="POST">
+        <div>
+            <p style="font-size: 20px;"><i>вставьте ссылку, которую хотите сократить:</i></p>
+            <input type="text" class="fadeIn second" name="href" placeholder="ссылка"><br><br>
+            <input type="radio" id="pablic" name="how" value="pablic" checked />
+            <label for="pablic">публичная</label>
+            {% if 'user_id' in session and session['user_id']!=None: %}
+            <input type="radio" id="all" name="how" value="all" />
+            <label for="all">общая</label>
+            <input type="radio" id="privat" name="how" value="privat" />
+            <label for="privat">приватная</label>
+            {% endif %}
+        </div>
+        <br>
+        <div>
+            <p style="font-size: 20px;"><i>впишите желаемое название:</i></p>
+            <input type="text" id="nameshref" name="nameshref" placeholder="псевдоним" /> <br> <br>
+            <input type="submit" class="fadeIn fourth" value="сократить">
+            <p>{% for msg in get_flashed_messages() %}</p>
+        </div>
+
+        {% if msg == 'выбранная ссылка уже сокращена': %}
+        <p style="color:red"><i>{{msg}}</i></p>
+        {% endif %}
+
+        {% if baselink == '': %}
+        <p style="color:red"><i>{{msg}}</i></p>
+        {% else: %}
+
+        <a class="link-done" href="{{baselink}}go/{{msg}}">{{baselink}}go/{{msg}}</a>
+         {% endif %}
+            {% endfor %}
+    </form>
+
+</body>
+
+</html>

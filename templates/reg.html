@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link type="text/css" href="{{url_for('static', filename='css/styles.css')}}" rel="stylesheet" />
+</head>
+<body>
+
+<header>
+    {% for i in menu %}
+        <a class="menu" href="{{i.url}}">{{i.name}}</a>
+    {% endfor %}
+</header>
+
+          <h2 class="title">{{title}}</h2>
+
+          <form class="for-links" action="/createUser" method="POST">
+              <div>
+                  <p style="font-size: 20px;"> <i>введите логин:</i> </p>
+                  <input type="text" name="log" placeholder="логин">
+                  <p style="font-size: 20px;"> <i>введите пароль:</i> </p>
+            <input type="password" name="pass" placeholder="пароль">
+                  <p style="font-size: 20px;"> <i>повторите пароль:</i> </p>
+            <input type="password"  name="passtwo" placeholder="повторите пароль"> <br> <br>
+            <input type="submit" value="зарегистрироваться">
+            {% for msg in get_flashed_messages() %}
+            <p style="color:red;">{{msg}}</p>
+            {% endfor %}
+              </div>
+          </form>
+
+</body>
+</html>
+

@@ -1,0 +1,101 @@
+body {
+  font-family: "Raleway";
+}
+
+/* index */
+
+header {
+  background-color: rgb(0, 0, 0);
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+
+  text-align: center;
+}
+
+.menu{
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+  padding: 10px;
+}
+
+header:nth-child(2){
+  grid-column: 3;
+}
+
+.menu:hover {
+  color: rgb(167, 104, 245);
+}
+
+.title{
+    text-align: center;
+}
+
+.for-links{
+    background-color: rgb(0, 0, 0);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    text-align: center;
+    justify-content: center;
+}
+
+input::placeholder{
+    font-family: "Raleway";
+    color: rgb(102, 102, 102);
+}
+
+input[type='text'],input[type='password']{
+    width: 25%;
+}
+
+input[type='submit']{
+    width: 20%;
+    background-color: rgb(255, 255, 255);
+    font-family: "Raleway";
+    font-weight: 600;
+    font-size: 16px;
+    border: 0;
+    font-style: italic;
+}
+
+input[type='submit']:hover{
+    background-color: rgb(167, 104, 245);
+}
+
+.link-done{
+    grid-column: 1;
+    text-align: center;
+    background-color: rgb(255, 255, 255);
+    padding: 10px;
+    font-size: 18px;
+}
+
+.error-massage{
+    color: red;
+}
+
+table{
+    background-color: black;
+    color: white;
+    width: 100%;
+}
+
+th{
+border: 1px white solid;
+padding: 10px;
+}
+
+.table-container{
+    display: flex;
+    justify-content: center;
+}
+
+.input-name{
+    width: 80%;
+}
+
+select{
+    width: 80%;
+}
