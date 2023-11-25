@@ -30,6 +30,7 @@
             <div class="wrapper fadeInDown">
                 <div id="formContent2">
                     <tr>
+                        <input type="hidden" class="form_edit_input" name="long" value={{h[1]}} />
                         <th><a href="{{baselink}}go/{{h[2]}}">{{baselink}}go/{{h[2]}}</a></th>
                         <th>{{h[7]}}</th>
                         <th>{{h[5]}}</th>
@@ -43,7 +44,6 @@
                                 {% endfor %}
                             </select>
                         </th>
-
                         <form action="/save" method="POST">
                             <th><button name="iddd" value="{{h[2]}}" class="btn">сохранить</button></th>
                         </form>
@@ -53,16 +53,22 @@
                         </form>
                     </tr>
 
-                    {% for msg in get_flashed_messages() %}
-                    {{msg}}
-                    {% endfor %}
+
                     {% endfor %}
                     <tr>
                         <th colspan="7">
                             <form action="/logout" method="post"><input type="submit" value="выйти">
                         </th>
                     </tr>
+                    <tr>
+                        <th colspan="7">
+                            {% for msg in get_flashed_messages() %}
+                            {{msg}}
+                            {% endfor %}
+                        </th>
+                    </tr>
     </table>
+
     </div>
     </div>
     </form>

@@ -66,6 +66,7 @@ def authUser():
                         '''SELECT * FROM links INNER JOIN links_types ON links_types.id = links.link_type_id WHERE links.id = ?''',
                         (session['all'][0],)).fetchone()
                     cursor.execute('''UPDATE links SET count = ? WHERE id=?''', (href[5] + 1, href[0]))
+                    print('alarm')
                     connect.commit()
                     session['all'] = None
                     session['user_id'] = None
@@ -78,6 +79,7 @@ def authUser():
                             '''SELECT * FROM links INNER JOIN links_types ON links_types.id = links.link_type_id WHERE links.id = ?''',
                             (session['all'][0],)).fetchone()
                         cursor.execute('''UPDATE links SET count = ? WHERE id=?''', (href[5] + 1, href[0]))
+                        print('alarm')
                         connect.commit()
                         session['all'] = None
                         session['user_id'] = None
@@ -107,11 +109,9 @@ def createhref():
     connect = sqlite3.connect('base.db')
     cursor = connect.cursor()
 
-
     povtor = cursor.execute("SELECT * from links WHERE link = ? and user_id = ?", (request.form['href'], session['user_id'])).fetchall()
 
-
-    if (povtor ==[]):
+    if (povtor == []):
         if request.form['href'] == '':
             session['nameshref'] = 1
             flask.flash(f'вставьте ссылку')
@@ -169,15 +169,16 @@ def createhref():
 def go(link):
     connect = sqlite3.connect('base.db')
     cursor = connect.cursor()
-    where = cursor.execute('''SELECT * FROM links INNER JOIN links_types ON links_types.id = links.link_type_id WHERE hreflink = ?''', (link, ) ).fetchone()
-    long = cursor.execute('''SELECT link FROM links INNER JOIN links_types ON links_types.id = links.link_type_id WHERE hreflink = ?''', (link, ) ).fetchone()
+    where = cursor.execute('''SELECT * FROM links INNER JOIN links_types ON links_types.id = links.link_type_id WHERE hreflink = ?''', (link, )).fetchone()
+    long = cursor.execute('''SELECT link FROM links INNER JOIN links_types ON links_types.id = links.link_type_id WHERE hreflink = ?''', (link, )).fetchone()
     if long == None:
         abort(404)
     else:
         if where[7] == 'public':
-            cursor.execute('''UPDATE links SET count = ? WHERE id=?''', (where[5]+1, where[0]))
+            cursor.execute('''UPDATE links SET count = ? WHERE id=?''', (where[5] + 1, where[0]))
             connect.commit()
             connect.close()
+            print('123')
             return redirect(where[1])
         elif where[7] == 'all':
             if 'user_id' in session and session['user_id'] != None:
@@ -211,28 +212,39 @@ def up():
     connect = sqlite3.connect('base.db')
     cursor = connect.cursor()
     name = cursor.execute('''SELECT * FROM 'links' WHERE hreflink = ? ''', (request.form["hreflink"],)).fetchone()
+    long = request.form["long"]
+    newshortlink = hashlib.md5(long.encode()).hexdigest()[:random.randint(8, 12)]
+
     if (name != None):
-        if (name[3] == session['user_id']):
+        if (request.form['hreflink'] == ''):
+            cursor.execute('''UPDATE links SET hreflink = ? WHERE id = ?''', (newshortlink, request.form["idlink"],))
+            connect.commit()
+            connect.close()
+            flask.flash('название ссылки изменено')
+            return redirect('/profile', code=302)
+
+        elif (name[3] == session['user_id']):
             if (request.form["types"] != '0'):
                 cursor.execute('''UPDATE links SET link_type_id = ? WHERE id = ?''', (request.form["types"], request.form["idlink"]))
                 connect.commit()
+                flask.flash('тип ссылки изменён')
                 connect.close()
                 return redirect('/profile', code=302)
             else:
                 connect.close()
+                flask.flash('псевдоним уже задействован')
                 return redirect('/profile', code=302)
-        else:
-            connect.close()
-            return redirect('/profile', code=302)
     else:
         if (request.form["types"] != '0'):
             cursor.execute('''UPDATE links SET hreflink = ?, link_type_id = ? WHERE id = ?''', (request.form["hreflink"],  request.form["types"], request.form["idlink"]))
             connect.commit()
+            flask.flash('успешно изменено')
             connect.close()
             return redirect('/profile', code=302)
         else:
             cursor.execute('''UPDATE links SET hreflink = ? WHERE id = ?''', (request.form["hreflink"], request.form["idlink"]))
             connect.commit()
+            flask.flash('название ссылки изменено')
             connect.close()
             return redirect('/profile', code=302)
 

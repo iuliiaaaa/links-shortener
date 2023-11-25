@@ -23,8 +23,8 @@
         <div>
             <p style="font-size: 20px;"><i>вставьте ссылку, которую хотите сократить:</i></p>
             <input type="text" class="fadeIn second" name="href" placeholder="ссылка"><br><br>
-            <input type="radio" id="pablic" name="how" value="pablic" checked />
-            <label for="pablic">публичная</label>
+            <input type="radio" id="public" name="how" value="public" checked />
+            <label for="public">публичная</label>
             {% if 'user_id' in session and session['user_id']!=None: %}
             <input type="radio" id="all" name="how" value="all" />
             <label for="all">общая</label>
